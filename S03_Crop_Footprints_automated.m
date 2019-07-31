@@ -4,12 +4,12 @@ close all hidden;
 %% Skript zur exakten Ausrichten, beschneiden und einfaerben von Footprints
 %% Input in Original\<Reifen>\*.jpg  Output in Original\<Reifen>\cropped\*.jpg
 
-Pfad=[pwd,'\Footprints_zu_auswerten\'];
+Pfad=[pwd,'/Footprints_zu_auswerten/'];
 
 
 
 %% Check the folders in Original\ and create a List of them
-dirpath=[Pfad,'Original\*'];
+dirpath=[Pfad,'Original/*'];
 listofDirs=dir(dirpath);
 j=1;
 for i = 1 : size(listofDirs,1)
@@ -25,14 +25,14 @@ end
 
 for d=1:length(MainListofDirs)
 currentFolder=MainListofDirs(d);
-subpath=[Pfad,'Original\',currentFolder.name,'\*jpg'];
+subpath=[Pfad,'Original/',currentFolder.name,'/*jpg'];
 listofFiles=dir(subpath);
 
 %% Loop over Files in Folder
 
     for i=1:length(listofFiles)
 
-        FilePath=[listofFiles(i).folder,'\',listofFiles(i).name];
+        FilePath=[listofFiles(i).folder,'/',listofFiles(i).name];
         if(exist(FilePath,'file') == 2)  
             %% Horizontale Ausrichtung des Footprints festlegen, dann Footprints umdrehen
 
@@ -82,8 +82,8 @@ listofFiles=dir(subpath);
 
     %         end
             %% korrigiertes aktuelles Bild speichern
-                NeuerName=[listofFiles(i).folder,'\corrected\Corrected_',listofFiles(i).name];
-                mkdir([listofFiles(i).folder,'\corrected']);
+                NeuerName=[listofFiles(i).folder,'/corrected/Corrected_',listofFiles(i).name];
+                mkdir([listofFiles(i).folder,'/corrected']);
                 imwrite(Bild1,NeuerName);
 
             %% Crop Image / beschneide Bild
@@ -123,8 +123,8 @@ listofFiles=dir(subpath);
             % imshow(Bild_2)
 
     %% zugeschnittene, gefaerbte Bilder abspeichern
-            mkdir([listofFiles(i).folder,'\cropped']);
-            NeuerName=[listofFiles(i).folder,'\cropped\Cropped_',listofFiles(i).name];
+            mkdir([listofFiles(i).folder,'/cropped']);
+            NeuerName=[listofFiles(i).folder,'/cropped/Cropped_',listofFiles(i).name];
             imwrite(Bild_2,NeuerName)
             close gcf
         end
