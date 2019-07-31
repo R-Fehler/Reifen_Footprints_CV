@@ -4,12 +4,12 @@ close all hidden;
 %% Skript zur exakten Ausrichten, beschneiden und einfaerben von Footprints
 %% Input in Original\<Reifen>\*.jpg  Output in Original\<Reifen>\cropped\*.jpg
 
-Pfad=[pwd,'/Footprints_zu_auswerten/'];
+Pfad= fullfile(pwd, 'Footprints_zu_auswerten');
 
 
 
 %% Check the folders in Original\ and create a List of them
-dirpath=[Pfad,'Original/*'];
+dirpath=fullfile(Pfad, 'Original', '*');
 listofDirs=dir(dirpath);
 j=1;
 for i = 1 : size(listofDirs,1)
@@ -25,7 +25,7 @@ end
 
 for d=1:length(MainListofDirs)
 currentFolder=MainListofDirs(d);
-subpath=[Pfad,'Original/',currentFolder.name,'/*jpg'];
+subpath=fullfile(Pfad, 'Original', currentFolder.name, '*jpg');
 listofFiles=dir(subpath);
 
 %% Loop over Files in Folder
