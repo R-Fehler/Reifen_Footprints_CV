@@ -4,17 +4,18 @@ close all hidden;
 %% Skript zur exakten Ausrichten, beschneiden und einfaerben von Footprints
 %% Input in Original\<Reifen>\*.jpg  Output in Original\<Reifen>\cropped\*.jpg
 
-Pfad=[pwd,'\Footprints_zu_auswerten\'];
+Pfad=fullfile(pwd,'Footprints_zu_auswerten');
 
-
+left_cross_ROI=[100 500 1100 5000];
+right_cross_ROI=[4000 500 700 5000];
 
 %% Check the folders in Original\ and create a List of them
-dirpath=[Pfad,'Original\*'];
+dirpath=fullfile(Pfad,'Original\*');
 listofDirs=dir(dirpath);
 j=1;
-for i = 1 : size(listofDirs,1)
-    if(listofDirs(i).isdir     && ~contains(listofDirs(i).name,'.') && ~contains(listofDirs(i).name ,'..'))
-    MainListofDirs(j) = listofDirs(i); % bei Bedarf vor allocaten, aber im Moment egal
+for ii = 1 : size(listofDirs,1)
+    if(listofDirs(ii).isdir     && ~contains(listofDirs(ii).name,'.') && ~contains(listofDirs(ii).name ,'..'))
+    MainListofDirs(j) = listofDirs(ii); %#ok<SAGROW> % bei Bedarf vor allocaten, aber im Moment egal
     j=j+1;
     
     end
@@ -25,14 +26,14 @@ end
 
 for d=1:length(MainListofDirs)
 currentFolder=MainListofDirs(d);
-subpath=[Pfad,'Original\',currentFolder.name,'\*jpg'];
+subpath=fullfile(Pfad,'Original',currentFolder.name,'*jpg');
 listofFiles=dir(subpath);
 
 %% Loop over Files in Folder
 
-    for i=1:length(listofFiles)
+    for ii=1:length(listofFiles)
 
-        FilePath=[listofFiles(i).folder,'\',listofFiles(i).name];
+        FilePath=[listofFiles(ii).folder,'\',listofFiles(ii).name];
         if(exist(FilePath,'file') == 2)  
             %% Horizontale Ausrichtung des Footprints festlegen, dann Footprints umdrehen
 
@@ -41,10 +42,10 @@ listofFiles=dir(subpath);
             copy1=Bild1;
             copy2=copy1;
             %% Punkt 1 und 2 finden
-            [x1,y1]=find_cross_xy(copy1,[100 500 1100 5000]);
-            [x2,y2]=find_cross_xy(copy2,[4000 500 700 5000]);
+            [x1,y1]=find_cross_xy(copy1,left_cross_ROI);
+            [x2,y2]=find_cross_xy(copy2,right_cross_ROI);
             %% Ursprung uebereinander legen
-            if mod(i,4) == 1 % erstes Bild legt Ursprung f�r Cropping fest
+            if ii == 1 % erstes Bild legt Ursprung fuer Cropping fest
                 x_start=x1;
                 y_start=y1;
             end
@@ -70,7 +71,7 @@ listofFiles=dir(subpath);
 
             %% neue Koord. von Punkt 1 nach Rotation finden
             copy1=Bild1;
-            [x1,y1]=find_cross_xy(copy1,[100 500 1100 5000]);
+            [x1,y1]=find_cross_xy(copy1,left_cross_ROI);
 
 
             x_diff=x_start-x1;
@@ -82,8 +83,8 @@ listofFiles=dir(subpath);
 
     %         end
             %% korrigiertes aktuelles Bild speichern
-                NeuerName=[listofFiles(i).folder,'\corrected\Corrected_',listofFiles(i).name];
-                mkdir([listofFiles(i).folder,'\corrected']);
+                NeuerName=fullfile(listofFiles(ii).folder,'corrected',['Corrected_',listofFiles(ii).name]);
+                mkdir(fullfile(listofFiles(ii).folder,'corrected'));
                 imwrite(Bild1,NeuerName);
 
             %% Crop Image / beschneide Bild
@@ -91,7 +92,7 @@ listofFiles=dir(subpath);
              % bilder gleich croppen um das uebereinander legen
              % zu ermoeglichen
                 %% das erste Bild gibt den maximalen Umriss vor.  
-             if mod(i,4)==1
+             if ii==1 
 
                 copy3=Bild1;
 
@@ -105,7 +106,7 @@ listofFiles=dir(subpath);
              end
 
     %% Farben anpassen: jedes Bild hat eigene Farbe         
-             if mod(i,4)==3
+             if mod(ii,4)==3
                 Bild_neu(:,:,1)=Bild_2(:,:,3);
                 Bild_neu(:,:,2)=Bild_2(:,:,2);
                 Bild_neu(:,:,3)=Bild_2(:,:,1);
@@ -113,7 +114,7 @@ listofFiles=dir(subpath);
                 clear Bild_neu;
              end
 
-             if mod(i,4)==0
+             if mod(ii,4)==0
                 Bild_neu(:,:,1)=Bild_2(:,:,2);
                 Bild_neu(:,:,2)=Bild_2(:,:,1);
                 Bild_neu(:,:,3)=Bild_2(:,:,3);
@@ -123,8 +124,8 @@ listofFiles=dir(subpath);
             % imshow(Bild_2)
 
     %% zugeschnittene, gefaerbte Bilder abspeichern
-            mkdir([listofFiles(i).folder,'\cropped']);
-            NeuerName=[listofFiles(i).folder,'\cropped\Cropped_',listofFiles(i).name];
+            mkdir(fullfile(listofFiles(ii).folder,'cropped'));
+            NeuerName=fullfile(listofFiles(ii).folder,'cropped',['Cropped_',listofFiles(ii).name]);
             imwrite(Bild_2,NeuerName)
             close gcf
         end
