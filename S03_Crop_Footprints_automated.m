@@ -8,6 +8,7 @@ Pfad=fullfile(pwd,'Footprints_zu_auswerten');
 
 left_cross_ROI=[100 500 1100 5000];
 right_cross_ROI=[4000 500 700 5000];
+Alpha_Setting=0;
 
 %% Check the folders in Original\ and create a List of them
 dirpath=fullfile(Pfad,'Original\*');
@@ -103,6 +104,8 @@ listofFiles=dir(subpath);
                 %% alle anderen Bildern werden mit diesem Umriss beschnitten
              else
                 Bild_2= imcrop(Bild1,[x1_min y1_min x1_max-x1_min y1_max-y1_min]);
+                Bild_BW=im2bw(Bild_2,0.9);
+                figure,imshow(Bild_BW);
              end
 
     %% Farben anpassen: jedes Bild hat eigene Farbe         
@@ -131,6 +134,47 @@ listofFiles=dir(subpath);
         end
     end
 
+
+   %% Transparenz und Ueberlagern der Bilder TODO: Resolution zu gering?
+    E=imread(fullfile(listofFiles(1).folder,'cropped',['Cropped_',listofFiles(1).name]));
+    imshow(E);
+        for ii=2:length(listofFiles)
+        I=imread(fullfile(listofFiles(ii).folder,'cropped',['Cropped_',listofFiles(ii).name]));
+        if(Alpha_Setting==1)
+            I=~im2bw(I,0.9);
+        else
+            I=imcomplement( rgb2gray(I));
+        end
+        colour = cat(3,zeros(size(E),'uint8'));
+        %%Colour Settings aktuell fuer 4 unterschiedliche Folien 
+        if ii==2
+            colour(:,:,1)=0;
+            colour(:,:,2)=0;
+            colour(:,:,3)=0;
+        end
+        
+        if ii==3
+            colour(:,:,1)=255;
+            colour(:,:,2)=255;
+            colour(:,:,3)=0;
+        end
+        if ii==4
+            colour(:,:,1)=66;
+            colour(:,:,2)=255;
+            colour(:,:,3)=66;
+        end    
+        hold on
+        h=imshow(colour);
+        hold off
+       
+        if ii==4
+            I(:,:,1)=I(:,:,1)*3;
+        end
+        set(h,'AlphaData',I);
+        end
+    mkdir(fullfile(listofFiles(ii).folder,'overlay'));
+    NeuerName=fullfile(listofFiles(ii).folder,'overlay','overlay.jpg');
+    saveas(h,NeuerName);
 end
 
     clc
