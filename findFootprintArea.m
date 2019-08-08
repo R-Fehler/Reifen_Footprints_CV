@@ -1,6 +1,6 @@
 function [xmin,ymin,xmax,ymax] = findFootprintArea(I)
-% FINDFOOTPRINTAREA finds the approximated Rectangle around 
-%                   the footprint
+% FINDFOOTPRINTAREA finds the approximated Rectangle around the footprint
+%                   
 % Syntax:
 %    [xmin,ymin,xmax,ymax] = findFootprintArea(I)
 
