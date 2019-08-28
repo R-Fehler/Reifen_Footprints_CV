@@ -34,7 +34,7 @@ listofFiles=dir(subpath);
 
     for ii=1:length(listofFiles)
 
-        FilePath=[listofFiles(ii).folder,'\',listofFiles(ii).name];
+        FilePath=fullfile(listofFiles(ii).folder,listofFiles(ii).name);
         if(exist(FilePath,'file') == 2)  
             %% Horizontale Ausrichtung des Footprints festlegen, dann Footprints umdrehen
 
