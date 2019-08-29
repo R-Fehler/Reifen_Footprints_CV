@@ -2,4 +2,17 @@
 
 ## Todo
 
-- ...
+- ...abhängig davon wie es angewandt wird.
+
+## HowTo
+
+in .\Footprints_zu_auswerten\Original\<ReifenName> die .jpegs des Scans ablegen.
+
+S03 ausführen. die gewünschte Excel Dtei auswählen.
+
+In Excel Datei Druck, Temperatur usw. eingeben / anpassen.
+
+S04 starten und Excel auswählen.
+
+PDF mit Namen des Reifens wird exportiert. (Aus Excel den Namen gezogen.)
+
