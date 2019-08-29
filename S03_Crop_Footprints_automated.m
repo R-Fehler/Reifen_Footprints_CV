@@ -4,6 +4,37 @@ close all hidden;
 %% Skript zur exakten Ausrichten, beschneiden und einfaerben von Footprints
 %% Input in Original\<Reifen>\*.jpg  Output in Original\<Reifen>\cropped\*.jpg
 
+
+Folienanzahl=4;
+%% Excel File
+[Name_Exceldatei,Pfad_excel] = uigetfile('*.xl*','Zu bearbeitende Exceldatei ausw�hlen');
+
+if Name_Exceldatei==0
+    clearvars
+    errordlg('Keine Excel-Datei ausgew�hlt, breche ab')
+    error('Keine Excel-Datei ausgew�hlt, breche ab')
+end
+[num,txt,raw] = xlsread([Pfad_excel,Name_Exceldatei]);
+
+% is_nan_temperatur = any(isnan(num(:, 2)));
+% is_nan_luftfeuchtigkeit = any(isnan(num(:, 3)));
+% is_nan_film_number = any(isnan([raw{3:end, 10}]));
+% 
+% if is_nan_temperatur || is_nan_luftfeuchtigkeit || is_nan_film_number
+%     errordlg('ERROR: Excel-Datei pr�fen, Eintrag fehlt')
+%     error('ERROR: Excel-Datei pr�fen, Eintrag fehlt')
+% end
+SpalteFoliennummer=10;
+SpalteNeuerName=12;
+SpalteFolientyp=2;
+PosCrop_x=13;
+PosCrop_y=14;
+Width=15;
+Height=16;
+AuswertungWeitermachen = 1;
+addpath(fullfile(cd,'Unterfunktionen'))
+
+%% 
 Pfad=fullfile(pwd,'Footprints_zu_auswerten');
 
 left_cross_ROI=[100 500 1100 5000];
@@ -25,7 +56,7 @@ end
 %% Main Loop over Folders / Directories
 
 
-for d=1:length(MainListofDirs)
+  for d=1:length(MainListofDirs)
 currentFolder=MainListofDirs(d);
 subpath=fullfile(Pfad,'Original',currentFolder.name,'*jpg');
 listofFiles=dir(subpath);
@@ -107,32 +138,42 @@ listofFiles=dir(subpath);
                 Bild_BW=im2bw(Bild_2,0.9);
                 figure,imshow(Bild_BW);
              end
-
-    %% Farben anpassen: jedes Bild hat eigene Farbe         
-             if mod(ii,4)==3
-                Bild_neu(:,:,1)=Bild_2(:,:,3);
-                Bild_neu(:,:,2)=Bild_2(:,:,2);
-                Bild_neu(:,:,3)=Bild_2(:,:,1);
-                Bild_2=Bild_neu;
-                clear Bild_neu;
-             end
-
-             if mod(ii,4)==0
-                Bild_neu(:,:,1)=Bild_2(:,:,2);
-                Bild_neu(:,:,2)=Bild_2(:,:,1);
-                Bild_neu(:,:,3)=Bild_2(:,:,3);
-                Bild_2=Bild_neu;
-                clear Bild_neu;
-             end
+             %Excel Zellen fuellen
+                raw{ii+Folienanzahl*d -2,PosCrop_x}=x1_min;
+                raw{ii+Folienanzahl*d -2,PosCrop_y}=y1_min;
+                raw{ii+Folienanzahl*d -2,Width}=x1_max-x1_min ;
+                raw{ii+Folienanzahl*d -2,Height}=y1_max-y1_min;
+     %% Farben anpassen: jedes Bild hat eigene Farbe         
+%              if mod(ii,4)==3
+%                 Bild_neu(:,:,1)=Bild_2(:,:,3);
+%                 Bild_neu(:,:,2)=Bild_2(:,:,2);
+%                 Bild_neu(:,:,3)=Bild_2(:,:,1);
+%                 Bild_2=Bild_neu;
+%                 clear Bild_neu;
+%              end
+% 
+%              if mod(ii,4)==0
+%                 Bild_neu(:,:,1)=Bild_2(:,:,2);
+%                 Bild_neu(:,:,2)=Bild_2(:,:,1);
+%                 Bild_neu(:,:,3)=Bild_2(:,:,3);
+%                 Bild_2=Bild_neu;
+%                 clear Bild_neu;
+%              end
             % imshow(Bild_2)
+      %% schwarze Kreuze entfernen
+      [~,Bild_2]=createMask_pink(Bild_2);
+      M = repmat(all(~Bild_2,3),[1 1 3]);
+      Bild_2(M) = 255;
 
     %% zugeschnittene, gefaerbte Bilder abspeichern
             mkdir(fullfile(listofFiles(ii).folder,'cropped'));
             NeuerName=fullfile(listofFiles(ii).folder,'cropped',['Cropped_',listofFiles(ii).name]);
+            raw{ii+Folienanzahl*d -2,12}=NeuerName;
             imwrite(Bild_2,NeuerName)
             close gcf
         end
     end
+    xlswrite([Pfad_excel,Name_Exceldatei],raw);
 
 
    %% Transparenz und Ueberlagern der Bilder TODO: Resolution zu gering?
@@ -176,7 +217,6 @@ listofFiles=dir(subpath);
     NeuerName=fullfile(listofFiles(ii).folder,'overlay','overlay.jpg');
     saveas(h,NeuerName);
 end
-
     clc
     close all hidden
     clearvars
