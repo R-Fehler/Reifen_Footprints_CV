@@ -17,7 +17,7 @@ FaktorHelligkeit=12;
 
 
 %% Convert Color-Scale to pressure contact
-for i=1:size(raw,1)
+for i=3:size(raw,1)
     FilePath=fullfile(raw{i,SpalteNeuerName});
     if(exist(FilePath,'file') == 2)  %
         Bild=imread(FilePath);
