@@ -1,10 +1,5 @@
-# Cropping Footprints
+# Cropping Footprints + Export PDF with Pressure Distribution Diagrams
 
 ## Todo
 
-- Alpha Werte mittels
-    
-    im=image(Bild1);
-    im.alphadata(0.2);
-    etc.
-    
+- ...
