@@ -35,7 +35,7 @@ AuswertungWeitermachen = 1;
 addpath(fullfile(cd,'Unterfunktionen'))
 
 %% 
-Pfad=fullfile(pwd,'Footprints_zu_auswerten');
+Pfad=fullfile(Pfad_excel);
 
 left_cross_ROI=[100 500 1100 5000];
 right_cross_ROI=[4000 500 700 5000];
