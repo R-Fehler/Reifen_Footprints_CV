@@ -4,6 +4,11 @@ function [xmin,ymin,xmax,ymax] = findFootprintArea(I)
 % Syntax:
 %    [xmin,ymin,xmax,ymax] = findFootprintArea(I)
 
+
+%% Settings
+% Puffer um auch gesamten Bereich zu erhalten. (da Rauschfilter den verkleinert)
+puffer=65;
+%% load Image
 img_a=I;
 % figure,imshow(img_a);
 
@@ -32,7 +37,6 @@ xmax=max(y);
 xmin=min(y);
 ymax=max(x);
 ymin=min(x);
-% Puffer um auch gesamten Bereich zu erhalten. (da Rauschfilter den verkleinert)
-puffer=30;
-rectangle('Position',[xmin-puffer-20,ymin-puffer,xmax-xmin+puffer,ymax-ymin+puffer],'EdgeColor','b','LineWidth',3);
+
+rectangle('Position',[xmin-puffer-30,ymin-puffer,xmax-xmin+puffer,ymax-ymin+puffer],'EdgeColor','b','LineWidth',3);
 end
