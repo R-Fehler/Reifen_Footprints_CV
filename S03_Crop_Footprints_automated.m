@@ -38,7 +38,7 @@ addpath(fullfile(cd,'Unterfunktionen'))
 Pfad=fullfile(Pfad_excel);
 
 left_cross_ROI=[100 500 1100 5000];
-right_cross_ROI=[4000 500 700 5000];
+right_cross_ROI=[3500 500 1200 5000];
 Alpha_Setting=0;
 
 %% Check the folders in Original\ and create a List of them
@@ -70,7 +70,7 @@ listofFiles=dir(subpath);
             %% Horizontale Ausrichtung des Footprints festlegen, dann Footprints umdrehen
 
             Bild1=imread(FilePath);
-            % imshow(Bild1);
+             imshow(Bild1);
             copy1=Bild1;
             copy2=copy1;
             %% Punkt 1 und 2 finden
@@ -99,7 +99,7 @@ listofFiles=dir(subpath);
             deltaY=AllPoints(IndexSecond,2)-AllPoints(IndexFirst,2);
             Omega=atan(deltaY/deltaX)*180/pi;
             Bild1=imrotate(Bild1,Omega,'crop');
-            % imshow(Bild1)
+             imshow(Bild1)
 
             %% neue Koord. von Punkt 1 nach Rotation finden
             copy1=Bild1;
@@ -111,7 +111,7 @@ listofFiles=dir(subpath);
 
             %% aktuelles Bild verschieben (nach x1,y1 von Punkt #1 von Bild #1)
                 Bild1=imtranslate(Bild1,[x_diff,y_diff]);
-                % imshow(Bild1)
+                imshow(Bild1)
 
     %         end
             %% korrigiertes aktuelles Bild speichern
