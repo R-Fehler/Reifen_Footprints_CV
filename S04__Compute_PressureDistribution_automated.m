@@ -126,8 +126,8 @@ for i=1:size(Reifen,1)
     
     AnzPixel=size(a,1)*size(a,2)-sum(sum(double(isnan(a))));
     %600dpi
-    Area=AnzPixel*(LengthPixel^2);
-    Load=Area*nanmean(nanmean(a));
+    Area=AnzPixel*(LengthPixel^2)
+    Load=Area*nanmean(nanmean(a))
     Ergebnisse.(matlab.lang.makeValidName(Reifen{i,1})).Druck=a;
     Ergebnisse.(matlab.lang.makeValidName(Reifen{i,1})).Radlast=Load;
     
