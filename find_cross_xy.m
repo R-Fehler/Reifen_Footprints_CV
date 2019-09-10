@@ -18,9 +18,9 @@ I=imcrop(I,ROI);
 
 
 BW=~I;
-% figure,imshow(BW);
+figure,imshow(BW);
 BW=imclearborder(BW); % entfernen der Randobjekte
-% imshow(BW);
+ imshow(BW);
 
 %% Linien detektieren
 [H,T,R] = hough(BW);
@@ -33,7 +33,7 @@ x = T(P(:,2)); y = R(P(:,1));
 plot(x,y,'s','color','white');
 
 lines = houghlines(BW,T,R,P,'FillGap',1,'MinLength',1);
-% figure, imshow(I), hold on
+ figure, imshow(I), hold on
 max_len = 0;
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
@@ -53,10 +53,12 @@ end
 
 
 %calculate the cross coords
-x_min=100000;% large pixelcount 
-y_min=100000;
-x_max=0;% small 
-y_max=0;
+upper_limit=100000;
+lower_limit=0;
+x_min=upper_limit;% large pixelcount 
+y_min=upper_limit;
+x_max=lower_limit;% small 
+y_max=lower_limit;
 
 x_sum=0;
 y_sum=0;
@@ -71,7 +73,7 @@ end
 x_avg=x_sum/(2*length(lines));
 y_avg=y_sum/(2*length(lines));
 
-radius=400;
+radius=300;
 %% Bestimme den Mittelpunkt des Kreuzes. hier anhand der Mitte der Extremwerte
 %  avg der Werte auch denkbar.(war teilweise weniger robust)
 for k= 1:length(lines)
@@ -106,13 +108,24 @@ for k= 1:length(lines)
 
 
 end
+if(x_max==lower_limit || x_min==upper_limit)
+   errordlg('ERROR: Kreuz nicht im ROI oder zu klein / ungenau')
+    error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')
+end
 
-x=(y_max+y_min)/2;
-y=(x_max+x_min)/2;
+if(y_max==lower_limit || y_min==upper_limit)
+   errordlg('ERROR: Kreuz nicht im ROI oder zu klein / ungenau')
+    error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')
+end
+
+   x=(y_max+y_min)/2;
+   y=(x_max+x_min)/2;
+   
+% plot(x,y,'x','LineWidth',4,'Color','yellow');
 
 close gcf
 %% Berechne die Koordinaten im gesamten (urspruenglichen) Bild
-x=ROI(2)+x;
+ x=ROI(2)+x;
 y=ROI(1)+y;
 % Swap x und y. Grund nicht ganz klar. funktioniert so.
 c=x;
