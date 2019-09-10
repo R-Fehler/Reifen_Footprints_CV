@@ -8,7 +8,7 @@
 
 in .\Footprints_zu_auswerten\Original\<ReifenName> die .jpegs des Scans ablegen.
 
-S03 ausführen. die gewünschte Excel Dtei auswählen.
+S03 ausführen. die gewünschte Excel Datei auswählen.
 
 In Excel Datei Druck, Temperatur usw. eingeben / anpassen.
 
