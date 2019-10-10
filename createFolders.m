@@ -14,7 +14,7 @@ SpalteTemperatur=5;
 SpalteRelLuftfeuchte=6;
 
 for ii=3:size(raw,1)
- newPath=[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll})];
+ newPath=fullfile('Original',[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll})]);
  mkdir(newPath);
  movefile(fullfile(Pfad,raw{ii,SpalteFoliennummer}),newPath);
 end
