@@ -6,7 +6,7 @@ close all hidden;
 
 
 Folienanzahl=4;
-%% Excel File
+% %% Excel File
 [Name_Exceldatei,Pfad_excel] = uigetfile('*.xl*','Zu bearbeitende Exceldatei ausw�hlen');
 
 if Name_Exceldatei==0
@@ -37,8 +37,8 @@ addpath(fullfile(cd,'Unterfunktionen'))
 %% 
 Pfad=fullfile(Pfad_excel);
 
-left_cross_ROI=[100 500 1100 5000];
-right_cross_ROI=[3500 500 1200 5000];
+left_cross_ROI=[50 500 1300 5000];
+right_cross_ROI=[3500 500 1400 5000];
 Alpha_Setting=0;
 
 %% Check the folders in Original\ and create a List of them

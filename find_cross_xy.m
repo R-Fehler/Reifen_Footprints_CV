@@ -28,7 +28,7 @@ BW=imclearborder(BW); % entfernen der Randobjekte
 
 
 
-P  = houghpeaks(H,5,'threshold',ceil(0.3*max(H(:))));
+P  = houghpeaks(H,10,'threshold',ceil(0.3*max(H(:))));
 x = T(P(:,2)); y = R(P(:,1));
 plot(x,y,'s','color','white');
 
@@ -121,7 +121,7 @@ end
    x=(y_max+y_min)/2;
    y=(x_max+x_min)/2;
    
-% plot(x,y,'x','LineWidth',4,'Color','yellow');
+ plot(x,y,'x','LineWidth',4,'Color','yellow');
 
 close gcf
 %% Berechne die Koordinaten im gesamten (urspruenglichen) Bild

@@ -14,8 +14,8 @@ function [BW,maskedRGBImage] = createMask_pink(RGB)
 I = rgb2hsv(RGB);
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min = 0.000;
-channel1Max = 1.000;
+channel1Min = 0.45;
+channel1Max = 1.0;
 
 % Define thresholds for channel 2 based on histogram settings
 channel2Min = 0.150;

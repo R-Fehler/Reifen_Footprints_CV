@@ -13,14 +13,14 @@ img_a=I;
 % figure,imshow(img_a);
 
 BW=createMask_pink(img_a);
-% imshow(BW);
+ imshow(BW);
 
 %% Filtere Rauschen 
 
 seD = strel('diamond',2);
 BWfinal = imerode(BW,seD);
 BWfinal = imerode(BWfinal,seD);
-%  imshow(BWfinal), title('segmented image');
+  imshow(BWfinal), title('segmented image');
  
 seD = strel('diamond',1);
 BWfinal = imerode(BWfinal,seD);
@@ -28,7 +28,7 @@ BWfinal = imerode(BWfinal,seD);
 BWfinal = imerode(BWfinal,seD);
 BWfinal = imerode(BWfinal,seD);
 
-%  imshow(BWfinal), title('3x segmented image');
+ imshow(BWfinal), title('3x segmented image');
 
 
 %% Bestimme Umriss
