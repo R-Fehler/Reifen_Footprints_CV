@@ -3,7 +3,7 @@ close all hidden;
 [Name_Exceldatei,Pfad] = uigetfile('*.xl*','Zu bearbeitende Exceldatei auswählen');
 [num,txt,raw] = xlsread([Pfad,Name_Exceldatei]);
 
-SpalteFoliennummer=15;
+SpalteFoliennummer=10;
 SpalteRadlastSoll=4;
 SpalteDruckSoll=7;
 SpalteNeuerName=12;
