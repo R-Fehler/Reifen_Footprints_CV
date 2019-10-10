@@ -14,7 +14,9 @@ function [BW,maskedRGBImage] = createMask_pink(RGB)
 I = rgb2hsv(RGB);
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min = 0.45;
+channel1Min = 0.0;
+channel1smallMax=0.15;
+channel1smallMin=0.75;
 channel1Max = 1.0;
 
 % Define thresholds for channel 2 based on histogram settings
@@ -26,7 +28,8 @@ channel3Min = 0.575;
 channel3Max = 1.000;
 
 % Create mask based on chosen histogram thresholds
-sliderBW = (I(:,:,1) >= channel1Min ) & (I(:,:,1) <= channel1Max) & ...
+sliderBW = xor((I(:,:,1) >= channel1Min & I(:,:,1) <= channel1smallMax ) ...
+    ,(I(:,:,1) >= channel1smallMin & I(:,:,1) <= channel1Max)) & ...
     (I(:,:,2) >= channel2Min ) & (I(:,:,2) <= channel2Max) & ...
     (I(:,:,3) >= channel3Min ) & (I(:,:,3) <= channel3Max);
 BW = sliderBW;
@@ -35,6 +38,6 @@ BW = sliderBW;
 maskedRGBImage = RGB;
 
 % Set background pixels where BW is false to zero.
-maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
+maskedRGBImage(repmat(~BW,[1 1 3])) = 255;
 
 end
