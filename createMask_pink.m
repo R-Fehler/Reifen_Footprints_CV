@@ -27,6 +27,8 @@ channel2Max = 1.000;
 channel3Min = 0.575;
 channel3Max = 1.000;
 
+
+% Preallocation testen. evtl speedup
 % Create mask based on chosen histogram thresholds
 sliderBW = xor((I(:,:,1) >= channel1Min & I(:,:,1) <= channel1smallMax ) ...
     ,(I(:,:,1) >= channel1smallMin & I(:,:,1) <= channel1Max)) & ...
