@@ -1,20 +1,23 @@
 clearvars;
 close all hidden;
-[Name_Exceldatei,Pfad] = uigetfile('*.xl*','Zu bearbeitende Exceldatei auswählen');
+[Name_Exceldatei,Pfad] = uigetfile('*.xl*','Zu bearbeitende Exceldatei auswï¿½hlen');
 [num,txt,raw] = xlsread([Pfad,Name_Exceldatei]);
 cd(Pfad)
-SpalteFoliennummer=10;
-SpalteRadlastSoll=4;
-SpalteDruckSoll=7;
-SpalteNeuerName=12;
+SpalteFahrbahn=1;
 SpalteFolienTyp=2;
 SpalteReifen=3;
-SpalteFahrbahn=1;
+SpalteRadlastSoll=4;
 SpalteTemperatur=5;
 SpalteRelLuftfeuchte=6;
+SpalteDruckSoll=7;
+SpalteCamberAngle=8;
 
-for ii=3:size(raw,1)
- newPath=fullfile('Original',[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll})]);
- mkdir(newPath);
- movefile(fullfile(Pfad,raw{ii,SpalteFoliennummer}),newPath);
+
+SpalteFoliennummer=10;
+SpalteNeuerName=12;
+
+for ii=3:(size(num,1)+2)
+    newPath=fullfile('Original',[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll}),'bar',num2str(raw{ii,SpalteRadlastSoll}),'N',num2str(raw{ii,SpalteCamberAngle}),'deg']);
+    mkdir(newPath);
+ movefile(fullfile(Pfad,[num2str(raw{ii,SpalteFoliennummer}),'.jpg']),newPath);
 end
