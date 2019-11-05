@@ -1,12 +1,12 @@
 clearvars;
 close all hidden;
 
-[Name_Exceldatei,Pfad] = uigetfile('*.xl*','Zu bearbeitende Exceldatei auswählen');
+[Name_Exceldatei,Pfad] = uigetfile('*.xl*','Zu bearbeitende Exceldatei auswï¿½hlen');
 
 if Name_Exceldatei==0
     clearvars
-    errordlg('Keine Excel-Datei ausgewählt, breche ab')
-    error('Keine Excel-Datei ausgewählt, breche ab')
+    errordlg('Keine Excel-Datei ausgewï¿½hlt, breche ab')
+    error('Keine Excel-Datei ausgewï¿½hlt, breche ab')
 end
 [num,txt,raw] = xlsread([Pfad,Name_Exceldatei]);
 
@@ -15,8 +15,8 @@ is_nan_luftfeuchtigkeit = any(isnan(num(:, 3)));
 is_nan_film_number = any(isnan([raw{3:end, 10}]));
 
 if is_nan_temperatur || is_nan_luftfeuchtigkeit || is_nan_film_number
-    errordlg('ERROR: Excel-Datei prüfen, Eintrag fehlt')
-    error('ERROR: Excel-Datei prüfen, Eintrag fehlt')
+    errordlg('ERROR: Excel-Datei prï¿½fen, Eintrag fehlt')
+    error('ERROR: Excel-Datei prï¿½fen, Eintrag fehlt')
 end
 SpalteFoliennummer=10;
 SpalteNeuerName=12;
@@ -37,8 +37,8 @@ for i=1:size(raw,1)
         Bild1=imread(FilePath);
         imshow(Bild1);
         message = sprintf(['Horizontale Ausrichtung des Reifens einlesen \n\n', ...
-            '\t- Ersten Punkt auswählen und auf AddPoint klicken\n',...
-            '\t- Zweiten Punkt auswählen und auf AddPoint klicken\n',...
+            '\t- Ersten Punkt auswï¿½hlen und auf AddPoint klicken\n',...
+            '\t- Zweiten Punkt auswï¿½hlen und auf AddPoint klicken\n',...
             '\t- Auf Next/End klicken']);
         msgbox(message,'replace')
         datacursormode on
@@ -51,7 +51,7 @@ for i=1:size(raw,1)
             handles.push2=uicontrol('Style', 'pushbutton', 'String','Next/End','Position',[80 10 60 20],'Callback', 'Abort');
             uiwait
             if size(AllPoints,1)<2
-                msgbox('2 Punkte für die horizontale Ausrichtung benötigt','replace')
+                msgbox('2 Punkte fï¿½r die horizontale Ausrichtung benï¿½tigt','replace')
             end
         end
         if ishandle(1)==0
@@ -72,7 +72,7 @@ for i=1:size(raw,1)
         imshow(Bild1)
         
         %% Origin
-        message = sprintf(['- Ursprungspunkt auswählen und auf AddPoint klicken\n',...
+        message = sprintf(['- Ursprungspunkt auswï¿½hlen und auf AddPoint klicken\n',...
             '- Auf Next/End klicken\n\n',...
             'Hinweis: Bei jeder Folie muss der Ursprung konsistent sein (z.B. immer das Zentrum von dem linken Kreuz)']);
         msgbox(message,'Ursprung einlesen','replace');
@@ -84,7 +84,7 @@ for i=1:size(raw,1)
             set(gcf,'toolbar','figure')
             uiwait
             if size(AllPoints,1)<1
-                msgbox('1 Punkt für den Ursprung des Footprints benötigt. Ursprung auswählen, auf AddPoint und dann auf Next/End klicken','replace')
+                msgbox('1 Punkt fï¿½r den Ursprung des Footprints benï¿½tigt. Ursprung auswï¿½hlen, auf AddPoint und dann auf Next/End klicken','replace')
             end
         end
         
@@ -99,7 +99,7 @@ for i=1:size(raw,1)
             
             h = imrect(gca,[round(size(Bild1,2)/2-size(Bild1,2)/10) round(size(Bild1,1)/2-size(Bild1,1)/10) size(Bild1,2)/5 size(Bild1,1)/5]);
             
-            message = sprintf(['Ziehbares Rechteck mit der Maus auf die Größe des Footprints einstellen.\n',...
+            message = sprintf(['Ziehbares Rechteck mit der Maus auf die Grï¿½ï¿½e des Footprints einstellen.\n',...
                 'Innerhalb des Rechteckes sollte nur Rosa-Farbe sein\n',...
                 'Auf Next/End klicken']);
             msgbox(message,'replace')

@@ -15,9 +15,14 @@ SpalteCamberAngle=8;
 
 SpalteFoliennummer=10;
 SpalteNeuerName=12;
-
+SpalteFolderPath=17;
 for ii=3:(size(num,1)+2)
     newPath=fullfile('Original',[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll}),'bar',num2str(raw{ii,SpalteRadlastSoll}),'N',num2str(raw{ii,SpalteCamberAngle}),'deg']);
+    raw{ii,SpalteFolderPath}=newPath;
     mkdir(newPath);
  movefile(fullfile(Pfad,[num2str(raw{ii,SpalteFoliennummer}),'.jpg']),newPath);
 end
+ xlswrite([Pfad,Name_Exceldatei],raw);
+ 
+close all hidden
+clearvars

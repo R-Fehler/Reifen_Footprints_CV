@@ -18,9 +18,9 @@ I=imcrop(I,ROI);
 
 
 BW=~I;
-figure,imshow(BW);
+%  figure,imshow(BW);
 BW=imclearborder(BW); % entfernen der Randobjekte
- imshow(BW);
+%   imshow(BW);
 
 %% Linien detektieren
 [H,T,R] = hough(BW);
@@ -30,11 +30,13 @@ BW=imclearborder(BW); % entfernen der Randobjekte
 
 P  = houghpeaks(H,10,'threshold',ceil(0.3*max(H(:))));
 x = T(P(:,2)); y = R(P(:,1));
-plot(x,y,'s','color','white');
+% plot(x,y,'s','color','white');
 
 lines = houghlines(BW,T,R,P,'FillGap',1,'MinLength',1);
- figure, imshow(I), hold on
+%  figure, imshow(I), hold on
 max_len = 0;
+
+    function []= plotlines()
 for k = 1:length(lines)
    xy = [lines(k).point1; lines(k).point2];
    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
@@ -50,6 +52,7 @@ for k = 1:length(lines)
       
    end
 end
+    end
 
 
 %calculate the cross coords
@@ -76,6 +79,7 @@ y_avg=y_sum/(2*length(lines));
 radius=300;
 %% Bestimme den Mittelpunkt des Kreuzes. hier anhand der Mitte der Extremwerte
 %  avg der Werte auch denkbar.(war teilweise weniger robust)
+function[]= calculateIntersection()
 for k= 1:length(lines)
   
     %% eingrenzen des ROI fuer Linien
@@ -109,18 +113,31 @@ for k= 1:length(lines)
 
 end
 if(x_max==lower_limit || x_min==upper_limit)
-   errordlg('ERROR: Kreuz nicht im ROI oder zu klein / ungenau')
-    error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')
+   errordlg('ERROR: Kreuz nicht im ROI wähle ROI (Grob) manuell')
+%     error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')   
+    figure, imshow(I);
+    title('ERROR: Kreuz nicht im ROI wähle Kreuz wähle ROI (Grob) manuell');
+    [x_avg,y_avg]=ginput(1);
+    calculateIntersection();
+    
 end
 
 if(y_max==lower_limit || y_min==upper_limit)
-   errordlg('ERROR: Kreuz nicht im ROI oder zu klein / ungenau')
-    error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')
+   errordlg('ERROR: Kreuz nicht im ROI wähle ROI (Grob) manuell')
+%     error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')
+    figure, imshow(I);
+    title('ERROR: Kreuz nicht im ROI wähle Kreuz wähle ROI (Grob) manuell');
+    [x_avg,y_avg]=ginput(1);
+    calculateIntersection();
 end
+
+%% Wenn Fehler auftritt soll manuell ein ROI ausgewählt werden können.
 
    x=(y_max+y_min)/2;
    y=(x_max+x_min)/2;
-   
+end
+
+ calculateIntersection();
  plot(x,y,'x','LineWidth',4,'Color','yellow');
 
 close gcf
