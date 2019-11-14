@@ -33,7 +33,7 @@ x = T(P(:,2)); y = R(P(:,1));
 % plot(x,y,'s','color','white');
 
 lines = houghlines(BW,T,R,P,'FillGap',1,'MinLength',1);
-%  figure, imshow(I), hold on
+%   figure, imshow(I), hold on
 max_len = 0;
 
     function []= plotlines()
@@ -77,9 +77,11 @@ x_avg=x_sum/(2*length(lines));
 y_avg=y_sum/(2*length(lines));
 
 radius=300;
+errorNo=0;
 %% Bestimme den Mittelpunkt des Kreuzes. hier anhand der Mitte der Extremwerte
 %  avg der Werte auch denkbar.(war teilweise weniger robust)
 function[]= calculateIntersection()
+    errorNo=errorNo+1;
 for k= 1:length(lines)
   
     %% eingrenzen des ROI fuer Linien
@@ -113,28 +115,57 @@ for k= 1:length(lines)
 
 end
 if(x_max==lower_limit || x_min==upper_limit)
-   errordlg('ERROR: Kreuz nicht im ROI wähle ROI (Grob) manuell')
 %     error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')   
-    figure, imshow(I);
-    title('ERROR: Kreuz nicht im ROI wähle Kreuz wähle ROI (Grob) manuell');
-    [x_avg,y_avg]=ginput(1);
-    calculateIntersection();
+
+
+    figure; imshow(I);
+    
+    if(errorNo==2)
+    title('ErrorLvl 2: Zoome in das Kreuz! und drücke Enter');
+
+        zoom on;
+        waitfor(gcf, 'CurrentCharacter', char(13))
+        zoom reset
+        zoom off
+            title('wähle das Kreuz aus mit linker Maustaste!');
+
+        [x,y] = ginput(1)       
+    else
+        title('ERROR Lvl1 :X Koord Kreuz nicht im ROI wähle Kreuz wähle ROI (Grob) manuell');
+        [x_avg,y_avg]=ginput(1);
+        calculateIntersection();
+    end
+    
+    
     
 end
 
 if(y_max==lower_limit || y_min==upper_limit)
-   errordlg('ERROR: Kreuz nicht im ROI wähle ROI (Grob) manuell')
 %     error('ERROR:  Kreuz nicht im ROI oder zu klein / ungenau')
-    figure, imshow(I);
-    title('ERROR: Kreuz nicht im ROI wähle Kreuz wähle ROI (Grob) manuell');
-    [x_avg,y_avg]=ginput(1);
-    calculateIntersection();
+   figure; imshow(I);
+    
+    if(errorNo==2)
+    title('ErrorLvl 2: Zoome in das Kreuz! und drücke Enter');
+
+        zoom on;
+        waitfor(gcf, 'CurrentCharacter', char(13))
+        zoom reset
+        zoom off
+            title('wähle das Kreuz aus mit linker Maustaste!');
+
+        [x,y] = ginput(1)       
+    else
+        title('ERROR Lvl1 :Y Koord Kreuz nicht im ROI wähle Kreuz wähle ROI (Grob) manuell');
+        [x_avg,y_avg]=ginput(1);
+        calculateIntersection();
+    end
 end
 
 %% Wenn Fehler auftritt soll manuell ein ROI ausgewählt werden können.
-
-   x=(y_max+y_min)/2;
-   y=(x_max+x_min)/2;
+if(errorNo<2)
+   y=(y_max+y_min)/2;
+   x=(x_max+x_min)/2;
+end
 end
 
  calculateIntersection();
@@ -142,12 +173,12 @@ end
 
 close gcf
 %% Berechne die Koordinaten im gesamten (urspruenglichen) Bild
- x=ROI(2)+x;
-y=ROI(1)+y;
+ x=ROI(1)+x;
+y=ROI(2)+y;
 % Swap x und y. Grund nicht ganz klar. funktioniert so.
-c=x;
-x=y;
-y=c;
+% c=x;
+% x=y;
+% y=c;
 
 
 end
