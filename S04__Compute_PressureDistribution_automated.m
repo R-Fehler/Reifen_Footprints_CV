@@ -166,6 +166,6 @@ for ii=1:size(Reifen,1)
     fileID = fopen(fullfile(ListofDirs(ii),[Reifen{ii,1},'.txt']),'w');
     fprintf(fileID,'Load: %f N \n Area: %f mm^2 \n',Load,Area);
     fclose(fileID);
-    
+    save(fullfile(Pfad,Reifen{ii,1}),'Ergebnisse','a_4LW_3LW','a');
 end
 
