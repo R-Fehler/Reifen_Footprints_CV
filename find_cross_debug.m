@@ -3,7 +3,7 @@ close all hidden;
 clc;
 
 
-
+%% hier Path des zu testenden Bildes.
 img_a=imread(fullfile("C:\footprint_auswertung_druckmessfolien\JanNeu\FootprintsJan_jpegsedit\20180828_Scans_Loop-2\Original\BBAsphalt2.6bar5750N0deg\6.jpg"));
 figure,imshow(img_a);
 [img_height,img_width,rgb_dim]=size(img_a);
