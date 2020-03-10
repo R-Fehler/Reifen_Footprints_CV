@@ -17,9 +17,8 @@ SpalteCamberAngle=8;
 SpalteFoliennummer=10;
 SpalteNeuerName=12;
 
-addpath([cd,'\','Druckausgabe'])
-addpath([cd,'\','Unterfunktionen'])
-
+addpath(fullfile(cd,'Druckausgabe'))
+addpath(fullfile(cd,'Unterfunktionen'))
 FaktorHelligkeit=12;
 
 
