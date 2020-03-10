@@ -16,14 +16,6 @@ if Name_Exceldatei==0
 end
 [num,txt,raw] = xlsread([Pfad_excel,Name_Exceldatei]);
 
-% is_nan_temperatur = any(isnan(num(:, 2)));
-% is_nan_luftfeuchtigkeit = any(isnan(num(:, 3)));
-% is_nan_film_number = any(isnan([raw{3:end, 10}]));
-%
-% if is_nan_temperatur || is_nan_luftfeuchtigkeit || is_nan_film_number
-%     errordlg('ERROR: Excel-Datei pr�fen, Eintrag fehlt')
-%     error('ERROR: Excel-Datei pr�fen, Eintrag fehlt')
-% end
 
 SpalteFahrbahn=1;
 SpalteFolienTyp=2;
@@ -52,18 +44,6 @@ Pfad=fullfile(Pfad_excel);
 
 Alpha_Setting=0;
 
-%% Check the folders in Original\ and create a List of them
-% dirpath=fullfile(Pfad,'Original\*');
-% listofDirs=dir(dirpath);
-% j=1;
-% for ii = 1 : size(listofDirs,1)
-%     if(listofDirs(ii).isdir     && ~strcmp(listofDirs(ii).name,'.') && ~strcmp(listofDirs(ii).name ,'..'))
-%         MainListofDirs(j) = listofDirs(ii); %#ok<SAGROW> % bei Bedarf vor allocaten, aber im Moment egal
-%         j=j+1;
-%         
-%     end
-%     
-% end
 %% Neue Implementation 
 for ii=3:(size(num,1)+2)
  newPath=fullfile('Original',[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll}),'bar',num2str(raw{ii,SpalteRadlastSoll}),'N',num2str(raw{ii,SpalteCamberAngle}),'deg']);
@@ -83,12 +63,6 @@ for currentFolder=ListofDirs %%Iterator for each string, d ist string var
     [row,col]=find(tempres==1);
     dd=min(row);
    
-    %% einzelne Ordner bearbeiten:
-%     if(~contains(subpath,'Ac2Asphalt2.6'))
-%         continue;
-%     end
-
-    
 
     %% Loop over Files in Folder
     listofFiles=dir(subpath);
@@ -186,23 +160,7 @@ for currentFolder=ListofDirs %%Iterator for each string, d ist string var
             raw{ii+dd -1,PosCrop_y}=y1_min;
             raw{ii+dd -1,Width}=x1_max-x1_min ;
             raw{ii+dd -1,Height}=y1_max-y1_min;
-            %% Farben anpassen: jedes Bild hat eigene Farbe
-            %              if mod(ii,4)==3
-            %                 Bild_neu(:,:,1)=Bild_2(:,:,3);
-            %                 Bild_neu(:,:,2)=Bild_2(:,:,2);
-            %                 Bild_neu(:,:,3)=Bild_2(:,:,1);
-            %                 Bild_2=Bild_neu;
-            %                 clear Bild_neu;
-            %              end
-            %
-            %              if mod(ii,4)==0
-            %                 Bild_neu(:,:,1)=Bild_2(:,:,2);
-            %                 Bild_neu(:,:,2)=Bild_2(:,:,1);
-            %                 Bild_neu(:,:,3)=Bild_2(:,:,3);
-            %                 Bild_2=Bild_neu;
-            %                 clear Bild_neu;
-            %              end
-            % imshow(Bild_2)
+
             %% schwarze Kreuze entfernen
             [~,Bild_2]=createMask_pink(Bild_2);
             M = repmat(all(~Bild_2,3),[1 1 3]);
@@ -218,47 +176,6 @@ for currentFolder=ListofDirs %%Iterator for each string, d ist string var
     end
     xlswrite([Pfad_excel,Name_Exceldatei],raw);
     
-    
-    %% Transparenz und Ueberlagern der Bilder TODO: Resolution zu gering?
-    % E=imread(fullfile(listofFiles(1).folder,'cropped',['Cropped_',listofFiles(1).name]));
-    % % imshow(E);
-    % for ii=2:length(listofFiles)
-    %     I=imread(fullfile(listofFiles(ii).folder,'cropped',['Cropped_',listofFiles(ii).name]));
-    %     if(Alpha_Setting==1)
-    %         I=~im2bw(I,0.9);
-    %     else
-    %         I=imcomplement( rgb2gray(I));
-    %     end
-    %     colour = cat(3,zeros(size(E),'uint8'));
-    %     %%Colour Settings aktuell fuer 4 unterschiedliche Folien
-    %     if ii==2
-    %         colour(:,:,1)=0;
-    %         colour(:,:,2)=0;
-    %         colour(:,:,3)=0;
-    %     end
-        
-    %     if ii==3
-    %         colour(:,:,1)=255;
-    %         colour(:,:,2)=255;
-    %         colour(:,:,3)=0;
-    %     end
-    %     if ii==4
-    %         colour(:,:,1)=66;
-    %         colour(:,:,2)=255;
-    %         colour(:,:,3)=66;
-    %     end
-    %     hold on
-    %      h=imshow(colour);
-    %     hold off
-        
-    %     if ii==4
-    %         I(:,:,1)=I(:,:,1)*3;
-    %     end
-    %     set(h,'AlphaData',I);
-    % end
-    % mkdir(fullfile(listofFiles(ii).folder,'overlay'));
-    % NeuerName=fullfile(listofFiles(ii).folder,'overlay','overlay.jpg');
-    % saveas(h,NeuerName);
 end
 % clc
 close all hidden

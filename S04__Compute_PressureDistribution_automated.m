@@ -120,7 +120,7 @@ for ii=1:size(Reifen,1)
     
     
     %% Print final results and append middle results in pdf file
-%     a=a/1.5; % Korrekturfaktor, falls benoetigt
+%     a=a/1.5; % Korrekturfaktor, falls benoetigt auskommentieren
     
     PlotDruck=a;
     X_Matrix=0:1:(size(PlotDruck,2)-1);X_Matrix=X_Matrix.*LengthPixel;X_Matrix=repmat(X_Matrix,size(PlotDruck,1),1);
