@@ -1,6 +1,7 @@
 *.db
-*.pdf
 Unterfunktionen/.ignore/ghostscript.txt
 Footprints_J*
 FootprintsJan
 JanNeu
+Achim*
+*DS*

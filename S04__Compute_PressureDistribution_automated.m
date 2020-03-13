@@ -1,8 +1,47 @@
 clearvars;
 close all hidden;
 set(0,'defaulttextinterpreter','none');
-[Name_Exceldatei,Pfad] = uigetfile('*.xl*','Zu bearbeitende Exceldatei ausw�hlen');
-[num,txt,raw] = xlsread([Pfad,Name_Exceldatei]);
+
+answer = questdlg('Excel or CSV File?', ...
+	'', ...
+	'Excel','CSV','Cancel','Cancel');
+% Handle response
+switch answer
+    case 'Excel'
+        read_CSV_File=false;
+       
+    case 'CSV'
+        read_CSV_File=true;
+    case 'Cancel'
+        errordlg('Keine Datei ausgewaehlt, breche ab')
+        error('Keine Datei ausgewaehlt, breche ab')
+end
+if read_CSV_File==true
+    [filename, filepath] = uigetfile('executed_*.csv', 'Choose CSV File created with createFolders.m');
+    offset=0;
+else
+    [filename, filepath] = uigetfile('*.xl*', 'Zu bearbeitende Exceldatei auswaehlen');
+    offset=2;
+
+end
+
+
+if filename == 0
+    clearvars
+    errordlg('Keine Datei ausgewaehlt, breche ab')
+    error('Keine Datei ausgewaehlt, breche ab')
+end
+
+% customReadCells() can also read xls files. 
+% xlsread is deprecated in R2019
+
+if read_CSV_File==true
+    [num,txt,raw] = customReadCells(fullfile(filepath,filename));
+else
+    [num, txt, raw] = xlsread([filepath, filename]);
+end
+
+
 
 SpalteFahrbahn=1;
 SpalteFolienTyp=2;
@@ -23,9 +62,8 @@ FaktorHelligkeit=12;
 
 
 %% Convert Color-Scale to pressure contact
-for ii=3:(size(num,1)+2)
-    FilePath=fullfile(raw{ii,SpalteNeuerName});
-    FilePath
+for ii=1+offset:(size(num,1)+offset)
+    FilePath=fullfile(raw{ii,SpalteNeuerName})
     if(exist(FilePath,'file') == 2)  %
         Bild=imread(FilePath);
         Bild(:,:,1)=Bild(:,:,1)-FaktorHelligkeit;
@@ -50,9 +88,9 @@ end
 Reifen=fieldnames(Ergebnisse);
 LengthPixel=25.4/600;
 
-for ii=3:(size(num,1)+2)
- newPath=fullfile(Pfad,'Original',[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll}),'bar',num2str(raw{ii,SpalteRadlastSoll}),'N',num2str(raw{ii,SpalteCamberAngle}),'deg']);
- ListofDirs{ii-2}=newPath; 
+for ii=1+offset:(size(num,1)+offset)
+ newPath=fullfile(filepath,'Original',[raw{ii,SpalteReifen},raw{ii,SpalteFahrbahn},num2str(raw{ii,SpalteDruckSoll}),'bar',num2str(raw{ii,SpalteRadlastSoll}),'N',num2str(raw{ii,SpalteCamberAngle}),'deg']);
+ ListofDirs{ii-offset}=newPath; 
 end
 ListofDirs=convertCharsToStrings(ListofDirs);
 ListofDirs=unique(ListofDirs,'stable');
@@ -165,6 +203,6 @@ for ii=1:size(Reifen,1)
     fileID = fopen(fullfile(ListofDirs(ii),[Reifen{ii,1},'.txt']),'w');
     fprintf(fileID,'Load: %f N \n Area: %f mm^2 \n',Load,Area);
     fclose(fileID);
-    save(fullfile(Pfad,Reifen{ii,1}),'Ergebnisse','a_4LW_3LW','a');
+    save(fullfile(filepath,Reifen{ii,1}),'Ergebnisse','a_4LW_3LW','a');
 end
 

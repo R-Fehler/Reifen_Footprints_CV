@@ -1,0 +1,11 @@
+﻿MOSCITO - Kontaktdruckmessungen;;;;;;;;;;;;;;;;;;;;pw: fast;;;;;;;
+Fahrbahn;Film;Tire;"Load
+[N]";"Temp
+[°C]";"rel Hum
+[%]";"p
+[bar]";"Camber angle
+[°]";;Film-Number;;Neuer Namen (Cropped Image);PosCrop (x);PosCrop (y);Width;Height;Neuer Pfad;VORLAGE: Reihenfolge;;;;;;;;;;
+Sommer;LLLLW;Conti_A;3600;23.7;58;2.5;0;;1;.jpg;;;;;;;LLLLW;1;;;;;;Daraus ergibt sich der Ordner und PDF Name;;;
+Sommer;LLLW;Conti_A;3600;24.2;58;2.5;0;;2;;;;;;;;LLLW;2;;;;;;Für die Kalibrierung der Folien notwendig;;;
+Sommer;LLW;Conti_A;3600;24.1;58;2.5;0;;3;;;;;;;;LLW;3;;;;;Anmerkung: Immer alle 4 Folientypen pro Versuch.;;;;
+Sommer;LW;Conti_A;3600;24.4;58;2.5;0;;4;;;;;;;;LW;4;;;;;;;;;
