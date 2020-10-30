@@ -1,8 +1,9 @@
-# Cropping Footprints + Export PDF with Pressure Distribution Diagrams
+# Cropping Footprints + Export PDF with computed Pressure Distribution Diagrams
+S03 und S04 sind die automatisierten Scripte.
+
 
 ## Todo
 
-- ...abhängig davon wie es angewandt wird.
 
 ## HowTo
 
